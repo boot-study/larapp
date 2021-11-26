@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'dashboard', 'namespace' => 'Admin'], function () {
+    Route::get('/', [HomeController::class, 'home'])->name('admin.home');
+
+    Route::resources([
+        'category' => '\App\Http\Controllers\Admin\CategoryController'
+    ]);
 });
