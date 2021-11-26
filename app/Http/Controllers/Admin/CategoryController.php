@@ -57,7 +57,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return view('admin.category.show', compact('category'));
     }
 
     /**
@@ -68,7 +68,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $statuses = Category::_statuses();
+        return view('admin.category.edit', compact('category', 'statuses'));
     }
 
     /**
@@ -78,9 +79,13 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $validated_data = $request->validated();
+        $category->update($validated_data);
+        $category->slug = Str::slug($category->name);
+        $category->save();
+        return redirect()->route('category.index')->with('updated_successfully', 'Updated successfully');
     }
 
     /**
@@ -91,6 +96,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('category.index')->with('deleted_successfully', 'Deleted successfully');
     }
 }

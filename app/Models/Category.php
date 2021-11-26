@@ -25,4 +25,9 @@ class Category extends Model
             self::STATUS_INACTIVE => 'Inactive',
         ];
     }
+
+    public function get_statuses()
+    {
+        return self::_statuses()[$this->status];
+    }
 }
